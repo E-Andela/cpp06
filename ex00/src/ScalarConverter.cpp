@@ -45,7 +45,7 @@ static void printInt(double value)
 static void printFloat(double value)
 {
 	std::cout << "float: ";
-	if (value > std::numeric_limits<float>::max() || value < std::numeric_limits<float>::min())
+	if (value > static_cast<double>(std::numeric_limits<float>::max()) || value < static_cast<double>(std::numeric_limits<float>::min()))
 	{
 		if (!std::isinf(value))
 		{
@@ -62,6 +62,7 @@ static void printFloat(double value)
 
 }
 
+
 static void printDouble(double value)
 {
 	std::cout << "double: " << value;
@@ -72,6 +73,27 @@ static void printDouble(double value)
 	std::cout << std::endl;
 }
 
+static bool isEscapeSequence(const std::string& literal, char& outChar)
+{
+	if (literal.length() == 2 && literal[0] == '\\') {
+		switch (literal[1]) {
+			case '0': outChar = '\0'; return true;
+			case 'a': outChar = '\a'; return true;
+			case 'b': outChar = '\b'; return true;
+			case 't': outChar = '\t'; return true;
+			case 'n': outChar = '\n'; return true;
+			case 'v': outChar = '\v'; return true;
+			case 'f': outChar = '\f'; return true;
+			case 'r': outChar = '\r'; return true;
+			case '\\': outChar = '\\'; return true;
+			case '"': outChar = '"'; return true;
+			case '\'': outChar = '\''; return true;
+			default: return false;
+		}
+	}
+	return false;
+}
+
 void ScalarConverter::convert(const std::string &literal)
 {
 	double value;
@@ -80,16 +102,20 @@ void ScalarConverter::convert(const std::string &literal)
 	} 
 	catch (const std::invalid_argument &e)
 	{
+		char escChar;
 		if (literal.length() == 1)
 		{
 			value = static_cast<double>(literal[0]);
+		}
+		else if (isEscapeSequence(literal, escChar))
+		{
+			value = static_cast<double>(escChar);
 		}
 		else
 		{
 			printImpossible();
 			return;
 		}
-
 	}
 	catch (const std::out_of_range &e)
 	{
