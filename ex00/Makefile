@@ -3,17 +3,11 @@ CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++11 
 #-DDEBUG
 
-TARGET = intern
+TARGET = convert
 
 SRC_DIR = src
 SRC = $(SRC_DIR)/main.cpp \
-	  $(SRC_DIR)/Bureaucrat.cpp \
-	  $(SRC_DIR)/AForm.cpp \
-	  $(SRC_DIR)/ShrubberyCreationForm.cpp \
-	  $(SRC_DIR)/RobotomyRequestForm.cpp \
-	  $(SRC_DIR)/PresidentialPardonForm.cpp \
-	  $(SRC_DIR)/Intern.cpp \
-	  $(SRC_DIR)/tests.cpp
+	  $(SRC_DIR)/ScalarConverter.cpp
 
 
 OBJ_DIR = obj
