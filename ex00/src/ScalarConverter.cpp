@@ -45,7 +45,7 @@ static void printInt(double value)
 static void printFloat(double value)
 {
 	std::cout << "float: ";
-	if (value > static_cast<double>(std::numeric_limits<float>::max()) || value < static_cast<double>(std::numeric_limits<float>::min()))
+	if (value > static_cast<double>(std::numeric_limits<float>::max()) || value < 0 - static_cast<double>(std::numeric_limits<float>::max()))
 	{
 		if (!std::isinf(value))
 		{
@@ -61,7 +61,6 @@ static void printFloat(double value)
 	std::cout << "f" << std::endl;
 
 }
-
 
 static void printDouble(double value)
 {
