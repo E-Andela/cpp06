@@ -18,10 +18,11 @@ static void printChar(double value)
 
 	char c = static_cast<char>(value);
 
-	if (value < 0 || value > 255 || std::isnan(value))
+	if (value < std::numeric_limits<char>::min() || value > std::numeric_limits<char>::max() || std::isnan(value))
 	{
 		std::cout << "impossible" << std::endl;
 	}
+	// Check if character is printable ASCII
 	else if (std::isprint(c))
 	{
 		std::cout << c << std::endl;
@@ -96,8 +97,9 @@ static bool isEscapeSequence(const std::string& literal, char& outChar)
 void ScalarConverter::convert(const std::string &literal)
 {
 	double value;
-	try {
-		value = std::stod(literal);
+	try 
+	{
+		value = std::stod(literal);		
 	} 
 	catch (const std::invalid_argument &e)
 	{
@@ -121,41 +123,9 @@ void ScalarConverter::convert(const std::string &literal)
 		printImpossible();
 		return;
 	}
+
 	printChar(value);
 	printInt(value);
 	printFloat(value);
 	printDouble(value);
-}
-
-ScalarConverter::ScalarConverter()
-{
-	#ifdef DEBUG
-	std::cout << "ScalarConverter default constructor called" << std::endl;
-	#endif
-	
-}
-
-ScalarConverter::ScalarConverter(const ScalarConverter &other)
-{
-	#ifdef DEBUG
-	std::cout << "ScalarConverter copy constructor called" << std::endl;
-	#endif
-	(void)other; // To avoid unused parameter warning
-}
-ScalarConverter::~ScalarConverter()
-{
-	#ifdef DEBUG
-	std::cout << "ScalarConverter destructor called" << std::endl;
-	#endif
-}
-ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other)
-{
-	#ifdef DEBUG
-	std::cout << "ScalarConverter assignment operator called" << std::endl;
-	#endif
-	if (this != &other)
-	{
-		// Copy the data from other to this
-	}
-	return *this;
 }
